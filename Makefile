@@ -54,23 +54,23 @@ o5-% : eg/%.ml
 o6-% : eg/%.ml
 	ocamlopt -dclambda $<
 
-# good
 o7-% : eg/%.ml
-	ocamlopt -dflambda $<
+	ocamlopt -drawclambda $<
 
 o8-% : eg/%.ml
-	ocamlopt -dflambda-verbose $<
-
-o9-% : eg/%.ml
 	ocamlopt -drawflambda $<
 
-o10 :
-	ocamlopt -dcmm a.ml
+o9-% : eg/%.ml
+	ocamlopt -dflambda-verbose $<
+
+# good
+o10-% : eg/%.ml
+	ocamlopt -dflambda $<
 
 o11 :
-	ocamlopt -dsel a.ml
+	ocamlopt -dcmm a.ml
 
-o12-% : eg/%.ml
-	ocamlopt -drawclambda $<
+o12 :
+	ocamlopt -dsel a.ml
 
 .PHONY: default build install uninstall test clean

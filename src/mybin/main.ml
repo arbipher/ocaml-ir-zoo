@@ -31,7 +31,7 @@ let ( |>> ) (x, y) f = (x, f y)
 
 let backend = Common.backend
 
-let lprogram, clambda_with_constants =
+let lprogram, clambda_with_constants, fcode =
   (* let () = *)
   let Typedtree.{ structure; coercion; _ } = typed in
   let lprogram =
@@ -51,23 +51,28 @@ let lprogram, clambda_with_constants =
   let program : Lambda.program =
     { Lambda.module_ident; main_module_block_size; required_globals; code }
   in
-  (* Asmgen.compile_implementation ~backend ~prefixname:i.output_prefix
-     ~middle_end:Flambda_middle_end.lambda_to_clambda ~ppf_dump:i.ppf_dump
-     program *)
-  (* ;
-     Compilenv.save_unit_info (cmx i) *)
   Ident.Set.iter Compilenv.require_global program.required_globals;
-  let clambda_with_constants =
+  let clambda_with_constants, fcode =
     let prefixname = "pre" in
     let ppf_dump = i.ppf_dump in
-    Flambda_middle_end.lambda_to_clambda ~backend ~prefixname ~ppf_dump program
+    Common.lambda_to_clambda' ~backend ~prefixname ~ppf_dump program
+    (* lambda_to_flambda ...; flambda_to_clambda  *)
   in
-  (* let end_gen_implementation ?toplevel ~ppf_dump clambda_with_constants *)
-  (lprogram, clambda_with_constants)
+  (* let () =
+       Asmgen.compile_implementation ~backend ~prefixname:i.output_prefix
+         ~middle_end:Flambda_middle_end.lambda_to_clambda ~ppf_dump:i.ppf_dump
+         program;
+       Compilenv.save_unit_info (cmx i)
+     in *)
+  (lprogram, clambda_with_constants, fcode)
 
 let () = Printlambda.lambda i.ppf_dump lprogram.code;;
 
-print_endline "\n---\n"
+print_endline "\n-f-\n"
+
+let () = Format.fprintf i.ppf_dump "@ %a@." Flambda.print_program fcode;;
+
+print_endline "\n-c-\n"
 
 let () =
   let (ulambda, _, structured_constants) : Clambda.with_constants =

@@ -1,0 +1,5 @@
+(tests
+ (names test)
+ (libraries alcotest ir)
+ (action
+  (run %{test} -e)))

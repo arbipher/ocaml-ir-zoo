@@ -1,0 +1,13 @@
+(library
+ (name ir)
+ (wrapped false)
+ (synopsis "the library demo")
+ (libraries compiler-libs.common compiler-libs.optcomp)
+ (inline_tests)
+ (preprocess
+  (pps ppx_jane -allow-unannotated-ignores ppx_deriving.show)))
+
+(env
+ (dev
+  (flags
+   (:standard -w -33 -w -26))))

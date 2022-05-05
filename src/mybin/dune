@@ -1,3 +1,3 @@
-(executable
- (name main)
+(executables
+ (names main rr)
  (libraries compiler-libs.common compiler-libs.optcomp ir))

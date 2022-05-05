@@ -5,7 +5,7 @@
 ;(allow_approximate_merlin)
 
 (package
- (name ir-zoo)
+ (name ast-zoo)
  (synopsis "My second Dune package!")
  (description
   "This is my second attempt at creating\na project with Dune.\n"))
